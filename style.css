@@ -1,0 +1,341 @@
+
+    /* Monotone color scheme */
+    :root {
+      --primary-color: #000000; /* Black */
+      --secondary-color: #ffffff; /* White */
+      --accent-color: #f5f5dc; /* Beige */
+      --background-color: #f0f0f0;
+      --text-color: #333;
+      --button-hover-color: #555;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #camera-container {
+      position: relative;
+      width: 90%;
+      max-width: 500px;
+      height: auto;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      background-color: var(--primary-color);
+    }
+
+    #camera-feed {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+
+    #overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .corner {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 4px solid var(--secondary-color);
+    }
+
+    #top-left {
+      top: 10%;
+      left: 10%;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    #top-right {
+      top: 10%;
+      right: 10%;
+      border-left: none;
+      border-bottom: none;
+    }
+
+    #bottom-left {
+      bottom: 10%;
+      left: 10%;
+      border-right: none;
+      border-top: none;
+    }
+
+    #bottom-right {
+      bottom: 10%;
+      right: 10%;
+      border-left: none;
+      border-top: none;
+    }
+
+    #capture-button {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    #capture-button:hover {
+      background-color: var(--button-hover-color);
+      transform: translateX(-50%) scale(1.05);
+    }
+
+    #capture-button:active {
+      transform: translateX(-50%) scale(0.95);
+    }
+
+    #gallery-button {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: var(--accent-color);
+      color: var(--primary-color);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    #gallery-button:hover {
+      background-color: var(--secondary-color);
+      transform: translateX(-50%) scale(1.05);
+    }
+
+    #gallery-button:active {
+      transform: translateX(-50%) scale(0.95);
+    }
+
+    /* Modal for captured image */
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    #modal-content {
+      background-color: var(--secondary-color);
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    #modal img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 10px;
+    }
+
+    #close-modal {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #close-modal:hover {
+      background-color: var(--button-hover-color);
+    }
+
+    /* Gallery page */
+    #gallery {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--background-color);
+      padding: 20px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    #gallery h2 {
+      text-align: center;
+      color: var(--primary-color);
+    }
+
+    #gallery-images {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      aspect-ratio: 1; /* Maintain 1:1 aspect ratio */
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensure the image fills the container */
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item .title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      color: var(--secondary-color);
+      background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+      text-align: center;
+      box-sizing: border-box;
+      z-index: 1; /* Ensure the title is above the image */
+    }
+
+    .edit-button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .edit-button:hover {
+      background-color: var(--button-hover-color);
+    }
+
+    .edit-menu {
+      position: absolute;
+      top: 40px;
+      right: 5px;
+      background-color: var(--secondary-color);
+      border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      display: none;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .edit-menu button {
+      padding: 8px 16px;
+      font-size: 14px;
+      background-color: transparent;
+      border: none;
+      color: var(--primary-color);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .edit-menu button:hover {
+      background-color: var(--background-color);
+    }
+
+    /* Delete animation */
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    .fade-out {
+      animation: fadeOut 0.3s ease forwards;
+    }
+
+    /* Enlarge animation */
+    @keyframes enlarge {
+      from {
+        transform: scale(1);
+      }
+      to {
+        transform: scale(1.2);
+      }
+    }
+
+    .enlarge {
+      animation: enlarge 0.3s ease forwards;
+    }
+
+    #back-button {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    #back-button:hover {
+      background-color: var(--button-hover-color);
+      transform: translateX(-50%) scale(1.05);
+    }
+
+    #back-button:active {
+      transform: translateX(-50%) scale(0.95);
+    }

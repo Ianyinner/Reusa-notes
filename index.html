@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reusa-notes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="camera-container">
+    <video id="camera-feed" autoplay playsinline></video>
+    <div id="overlay">
+      <div class="corner" id="top-left"></div>
+      <div class="corner" id="top-right"></div>
+      <div class="corner" id="bottom-left"></div>
+      <div class="corner" id="bottom-right"></div>
+    </div>
+  </div>
+  <button id="capture-button">Capture Note</button>
+  <button id="gallery-button">Gallery</button>
+
+  <!-- Modal for captured image -->
+  <div id="modal">
+    <div id="modal-content">
+      <img id="captured-image" src="" alt="Captured Note">
+      <button id="close-modal">Close</button>
+    </div>
+  </div>
+
+  <!-- Gallery page -->
+  <div id="gallery">
+    <h2>Gallery</h2>
+    <div id="gallery-images"></div>
+    <button id="back-button">Back to Camera</button>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
